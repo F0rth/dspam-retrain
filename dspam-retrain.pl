@@ -13,17 +13,6 @@ error("dspam-retrain called without recip") unless defined $recip;
 die("dspam-retrain not properly initiated") unless defined($class) and defined($sender) and defined($recip);
    
 my $user;
-#if ($recip =~ /^(?:spam|ham)[_-](\w+)@/) {
-    # username is part of the recipient
-#    $user = $1;
-#} elsif ($sender =~ /^(\w+)@/) {
-    # username is in the sender
-#    $user = $1;
-#} else {
-#    print "Can't determine user\n";
-#    notice("dspam-retrain can't determine user");
-#    exit 75;   # EX_TEMPFAIL
-#}
 
 # Pull out DSPAM signatures and send them to the dspam program
 my $sub;
