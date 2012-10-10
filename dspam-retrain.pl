@@ -18,44 +18,44 @@ my $user;
 my $sub;
 my $sig;
 while (<>) {
-
-   if ((! $user) && (/^[ >]*Delivered-To:\s*(\S+)/i)) {
-        $user = $1;
-    }
-    elsif ((! $subj) && (/^Subject: /)) {
-        $subj = $_;
-    } elsif (/^[ >]*X-DSPAM-Signature:\s*(\S+)/i) {
-        $sig = $1;
-        last;
-    } elsif ((! $sig) && (/^[ >]*!DSPAM:\s*(S+)/)) {
-        $sig = $1;
-        last;
-}
-}
-
-
-if (! defined($subj)) {
-    error("dspam-retrain can't find messages subject");
-    die("dspam-retrain can't find messages subject");
-}
-if (! defined($sig)) {
-    error("dspam-retrain can't find DSPAM signature");
-    die("dspam-retrain can't find DSPAM signature");
-}
-
-
-my $ret = system($DSPAM, '--client', '--source=error', "--class=$class", '--user', $user, "--signature=$sig");
-if ($ret==0) {
-    notice("$DSPAM retrained with:$class; $user; $sig; $subj");
-    notice("$ret");
-} else {
-    error("dspam-retrain error on: $DSPAM --source=error --class=$class --user $user --signature=$sig; $subj;");
-    if ($ret == -1) {
-        error("dspam-retrain: $DSPAM failed to execute: $!");
-    } elsif ($ret & 127) {
-        error(sprintf "dspam-retrain: child died with signal %d, %s coredump\n", ($? & 127), ($? & 128) ? 'with' :  'without' );
-    }
-    else {
-        error(sprintf "dspam-retrain: child exited with value %d\n", $? >> 8);
-    }
-}
+	
+	   if ((! $user) && (/^[ >]*Delivered-To:\s*(\S+)/i)) {
+		        $user = $1;
+	    }
+	    elsif ((! $subj) && (/^Subject: /)) {
+		        $subj = $_;
+		    } elsif (/^[ >]*X-DSPAM-Signature:\s*(\S+)/i) {
+			        $sig = $1;
+			        last;
+			    } elsif ((! $sig) && (/^[ >]*!DSPAM:\s*(S+)/)) {
+				        $sig = $1;
+				        last;
+			}
+		}
+		
+		
+		if (! defined($subj)) {
+			    error("dspam-retrain can't find messages subject");
+			    die("dspam-retrain can't find messages subject");
+		}
+		if (! defined($sig)) {
+			    error("dspam-retrain can't find DSPAM signature");
+			    die("dspam-retrain can't find DSPAM signature");
+		}
+		
+		
+		my $ret = system($DSPAM, '--client', '--source=error', "--class=$class", '--user', $user, "--signature=$sig");
+		if ($ret==0) {
+			    notice("$DSPAM retrained with:$class; $user; $sig; $subj");
+			    notice("$ret");
+			} else {
+				    error("dspam-retrain error on: $DSPAM --source=error --class=$class --user $user --signature=$sig; $subj;");
+				    if ($ret == -1) {
+					        error("dspam-retrain: $DSPAM failed to execute: $!");
+					    } elsif ($ret & 127) {
+						        error(sprintf "dspam-retrain: child died with signal %d, %s coredump\n", ($? & 127), ($? & 128) ? 'with' :  'without' );
+					    }
+					    else {
+						        error(sprintf "dspam-retrain: child exited with value %d\n", $? >> 8);
+					    }
+				}
